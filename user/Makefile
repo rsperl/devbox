@@ -3,6 +3,7 @@ info:
 	@echo Possible targets are:
 	@echo "  build	- build docker container"
 	@echo "  run	- run /bin/bash for devbox"
+	@echo "  copy   - copy needed files for devbox"
 	@echo
 	@echo "  cleanimages - clean up all untagged docker images"
 	@echo "  cleanexited - clean up all exited docker containers"
@@ -11,18 +12,14 @@ info:
 copy:
 	rm -rf src
 	mkdir src
-	cp -rp ${HOME}/.ssh src/ssh
-	cp -rp ${HOME}/.vimrc src/vimrc
-	cp -rp ${HOME}/.vim src/vim
-	cp -rp ${HOME}/.tmux.conf src/tmux.conf
-	cp -rp ${HOME}/.tmuxinator/itd.yml src/itd.yml
+	tar -C${HOME} -cf src/files.tar .docker.env .zsh-custom .zshrc .oh-my-zsh .myenv.zsh .ssh .vimrc .vim .tmux.conf .tmuxinator
 
 
 build: copy
-	docker build .
+	docker build -t dev .
 
 run:
-	docker run --name dev -v /Users/${USER}/docker_vol:/home/dev/shared -it devbox /bin/bash
+	docker run --rm --name dev -it -v ${HOME}/git:/home/risugg/git dev
 
 cleanimages:
 	docker rmi `docker images -q -f dangling=true`

@@ -1,21 +1,17 @@
-from devboxbase:latest
+from perlbase:latest
 
 # Setup home environment
-run useradd dev --shell /bin/bash --password dev
-run mkdir /home/dev && chown -R dev: /home/dev
-run mkdir -p /home/dev/bin /home/dev/shared /home/dev/.tmuxinator
-env PATH /home/dev/bin:$PATH
-env PKG_CONFIG_PATH /home/dev/lib/pkgconfig
-env LD_LIBRARY_PATH /home/dev/lib
+run useradd risugg --shell /bin/zsh -m -d /home/risugg --password risugg -u7768 -g20
 
-workdir /home/dev
-env HOME /home/dev
-env EDITOR vim
-add src/vimrc /home/dev/.vimrc
-add src/vim /home/dev/.vim
-add src/ssh /home/dev/.ssh
-add src/tmux.conf /home/dev/.tmux.conf
-add src/itd.yml /home/dev/.tmuxinator/itd.yml
+workdir /home/risugg
+env HOME /home/risugg
+env EDITOR=vim INSIDE_DOCKER=1
+add src/files.tar /home/risugg
+#add src/vimrc /home/risugg/.vimrc
+#add src/vim /home/risugg/.vim
+#add src/ssh /home/risugg/.ssh
+#add src/tmux.conf /home/risugg/.tmux.conf
+#add src/itd.yml /home/risugg/.tmuxinator/itd.yml
 
-run chown -R dev: /home/dev
-user dev
+user risugg
+CMD ["/bin/zsh"]
