@@ -2,7 +2,7 @@
 info:
 	@echo Possible targets are:
 	@echo "  build	- build docker container"
-	@echo "  run	- run /bin/bash for devbox"
+	@echo "  run	- run a shell for devbox"
 	@echo "  copy   - copy needed files for devbox"
 	@echo
 	@echo "  cleanimages - clean up all untagged docker images"
