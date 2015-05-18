@@ -1,7 +1,6 @@
 from devboxbase:latest
 
 label com.sas.it.perl=1
-#RUN curl -L http://snaps.unx.sas.com/pub/CPAN/cpanmin.pl | perl - App::cpanminus && \
 RUN curl -L https://raw.githubusercontent.com/miyagawa/cpanminus/master/cpanm | perl - App::cpanminus && \
   cpanm --mirror http://mirrors.ibiblio.org/CPAN/ --mirror-only --notest \
   App::cpanminus \
