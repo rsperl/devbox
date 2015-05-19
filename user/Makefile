@@ -1,8 +1,8 @@
-
 info:
 	@echo Possible targets are:
 	@echo "  build	- build docker container"
-	@echo "  run	- run a shell for devbox"
+	@echo "  start	- start a service"
+	@echo "  shell  - run a shell"
 	@echo "  copy   - copy needed files for devbox"
 	@echo
 	@echo "  cleanimages - clean up all untagged docker images"
@@ -18,11 +18,20 @@ copy:
 build: copy
 	docker build -t dev .
 
-run:
-	docker run --rm --name dev -it -v ${HOME}/git:/home/risugg/git dev
+start:
+	docker-compose up ${SERVICE}
+
+shell:
+ifeq (${SERVICE},)
+	@echo "set env var SERVICE"
+	@exit 1;
+endif
+	docker-compose run --entrypoint /bin/zsh ${SERVICE}
 
 cleanimages:
 	docker rmi `docker images -q -f dangling=true`
 
 cleanexited:
 	docker rm `docker ps -q -f status=exited`
+
+# vim:noexpandtab:ts=8:sw=8:ai
