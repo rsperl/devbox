@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 info:
 	@echo Possible targets are:
 	@echo "  build	- build docker container"
@@ -9,6 +11,8 @@ info:
 	@echo "  cleanexited - clean up all exited docker containers"
 	@echo ""
 
+.PHONY: copy build
+
 copy:
 	rm -rf src
 	mkdir src
@@ -16,14 +20,29 @@ copy:
 
 
 build: copy
-	docker build -t my-dev-env .
+	docker build -t dev .
 
 shell:
-	docker run --rm -it \
-		-v $$HOME:/home/risugg \
-		my-dev-env
+	@cname=dev; \
+	for i in `seq 1 10`; do \
+		tryname=$$cname$$i; \
+		name_exists=`docker ps --filter name=$$tryname | grep -v 'CONTAINER ID' | wc -l | sed -e 's/ //g'`; \
+		if [ "$$name_exists" = 0 ] ; then \
+			cname=$$tryname; \
+			break; \
+		fi; \
+	done; \
+	echo cname=$$cname
+	echo docker run \
+		--rm \
+		-it \
+		--name $$cname \
+		--hostname $$cname \
+		-v $$HOME/git:/home/dev/git \
+		dev
 
 cleanimages:
 	docker rmi `docker images -q -f dangling=true`
+
 
 # vim:noexpandtab:ts=8:sw=8:ai

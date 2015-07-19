@@ -4,14 +4,15 @@ MAINTAINER Richard.Sugg@gmail.com
 
 LABEL com.sas.it.user=1
 
+ENV HOME=/home/dev SHELL=/bin/zsh EDITOR=vim INSIDE_DOCKER=1
+
 # Setup home environment
-RUN apt-get install -y tmux; \
+RUN apt-get install -y tmux vim; \
         gem install tmuxinator; \
-        useradd risugg --shell /bin/zsh -m -d /home/risugg --password risugg -u7768 -g20
+        useradd dev --shell $SHELL -m -d $HOME  --password dev; \
+        mkdir -p $HOME/git
 
-WORKDIR /home/risugg
-ENV HOME=/home/risugg
-ENV SHELL=/bin/zsh
-ENV EDITOR=vim INSIDE_DOCKER=1
+WORKDIR $HOME
 
+ADD src/files.tar $HOME
 ENTRYPOINT ["/bin/zsh"]
