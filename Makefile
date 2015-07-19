@@ -16,22 +16,14 @@ copy:
 
 
 build: copy
-	docker build -t dev .
-
-start:
-	docker-compose up ${SERVICE}
+	docker build -t my-dev-env .
 
 shell:
-ifeq (${SERVICE},)
-	@echo "set env var SERVICE"
-	@exit 1;
-endif
-	docker-compose run --entrypoint /bin/zsh ${SERVICE}
+	docker run --rm -it \
+		-v $$HOME:/home/risugg \
+		my-dev-env
 
 cleanimages:
 	docker rmi `docker images -q -f dangling=true`
-
-cleanexited:
-	docker rm `docker ps -q -f status=exited`
 
 # vim:noexpandtab:ts=8:sw=8:ai
