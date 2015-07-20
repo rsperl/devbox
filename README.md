@@ -1,5 +1,5 @@
-# devbox
+# docker devbox
 
-provides any development tools I need
+Provides any development tools I need.
 
-Relies on ubuntu_base from https://github.com/rsperl/docker_ubuntu_base
+Relies on [ubuntu_base](from https://github.com/rsperl/docker_ubuntu_base).
