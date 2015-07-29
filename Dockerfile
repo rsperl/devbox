@@ -7,12 +7,13 @@ LABEL com.sas.it.user=1
 ENV HOME=/home/dev SHELL=/bin/zsh EDITOR=vim INSIDE_DOCKER=1
 
 # Setup home environment
-RUN apt-get install -y tmux vim; \
-        gem install tmuxinator; \
-        useradd dev --shell $SHELL -m -d $HOME  --password dev; \
+RUN apt-get update -y; \
+        apt-get install -y tmux vim; \
+            gem install tmuxinator; \
+            useradd dev --shell $SHELL -m -d $HOME  --password dev; \
         mkdir -p $HOME/git
 
+USER    dev
 WORKDIR $HOME
 
-ADD src/files.tar $HOME
 ENTRYPOINT ["/bin/zsh"]
