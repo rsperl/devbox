@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/zsh
+
+source $HOME/.colors
 
 DIR=$HOME/git/devbox
 TAG=dev
@@ -20,8 +22,14 @@ for i in `seq 1 10`; do
         fi
 done
 
-echo Running image $IMAGE as container $cname
-echo "(set env var DEVBOX_RUN_OPTS to set additional run options)"
+echo_lt_red ">>> Running image $IMAGE as container $cname"
+if [ -z "$DEVBOX_RUN_OPTS" ] ; then
+    echo "    (set env var " . `echo_lt_blue DEVBOX_RUN_OPTS` "to set additional run options)"
+else
+    echo `echo_lt_blue DEVBOX_RUN_OPTS`"=$DEVBOX_RUN_OPTS"
+fi
+echo `echo_lt_blue image`"    : $IMAGE"
+echo `echo_lt_blue hostname`" : $cname"
 
 #
 # run the image $IMAGE as container $cname
@@ -34,12 +42,12 @@ docker run \
         --name $cname \
         --hostname $cname \
         -v $HOME/.oh-my-zsh:$DOCKER_HOME/.oh-my-zsh \
+        -v $HOME/.zshrc:$DOCKER_HOME/.zshrc \
         -v $HOME/.zsh-custom:$DOCKER_HOME/.zsh-custom \
         -v $HOME/.tmux.conf:$DOCKER_HOME/.tmux.conf \
-        -v $HOME/.myenv.zsh:$DOCKER_HOME/.myenv.zsh \
         -v $HOME/.tmuxinator:$DOCKER_HOME/.tmuxinator \
         -v $HOME/.zsh-update:$DOCKER_HOME/.zsh-update \
-        -v $HOME/.zshrc:$DOCKER_HOME/.zshrc \
+        -v $HOME/.iterm2_shell_integration.zsh:$DOCKER_HOME/.iterm2_shell_integration.zsh \
         -v $HOME/.ssh:$DOCKER_HOME/.ssh \
         -v $HOME/.zsh-prompt:$DOCKER_HOME/.zsh-prompt \
         -v $HOME/.my.cnf:$DOCKER_HOME/.my.cnf \

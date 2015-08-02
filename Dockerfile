@@ -8,7 +8,7 @@ ENV HOME=/home/dev SHELL=/bin/zsh EDITOR=vim INSIDE_DOCKER=1
 
 # Setup home environment
 RUN apt-get update -y; \
-        apt-get install -y tmux vim; \
+        apt-get install -y tmux vim manpages; \
             gem install tmuxinator; \
             useradd dev --shell $SHELL -m -d $HOME  --password dev; \
         mkdir -p $HOME/git
